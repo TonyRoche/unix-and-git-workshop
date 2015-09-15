@@ -1,0 +1,438 @@
+WORKING WITH GIT REPOSITORIES
+
+git --version
+
+git init my_first_repository
+	create a repository
+	creates dir with hidden folder
+
+--another way to make a depository
+
+mkdir my_project
+
+cd my_project
+
+touch file1
+
+touch file2
+
+touch file3
+	creates dummy files
+	
+git init
+	run from my_project folder
+	creates depository with same name as folder
+
+
+mv my_first_repository/ my_even_cooler_project
+	renames depository
+
+--.git folder contains all needed info to restore project
+
+rm -r my_even_cooler_project/.git
+	deletes repository (be careful)
+
+COMMITTING CHANGES
+
+git init my_project
+
+cd my_project
+
+nano README
+	create readme file
+
+--type blah blah
+
+ctrl-x
+
+git add README
+	adds the file to the repository and lets git know its changes should 
+be tracked
+	not every file in directory needs to be shared and tracked
+
+git commit
+	opens commit message template
+		who is making the commit
+		what branch we're on
+		a brief description of what was changed
+	we need to provide a brief message for our commit
+		"Added a README file"
+			type without hashes
+
+
+--an important part of commit is letting users know who you are so they can 
+contact you if they have 
+
+questions.  but treehouse user isn't very helpful
+
+git config --global user.name "Tommy Morgan"
+
+git config --global user.email "bla@bla.com"
+	global means these changes will be applied for all of our 
+repositories
+
+nano README
+	This project will help treehouse students learn about git
+		should we commit it?
+			is there a good commit message we can use?
+				added project mission statement to README 
+file
+	seems reasonable (short and meaningful)
+		important to commit when a good opportunity presents itself, 
+the more detailed your 
+
+project history will be.
+
+git commit -a -m "Added project mission statement to README file."
+	-a tells git to commit all the changes it can find
+		adds the files to the staging are and commits in one step
+	-m allows us to provide a commit message to the git commit command 
+directly
+	use generally to commit
+
+--probably good idea to err on the side of committing more often than not
+
+THE STAGING AREA
+
+git status
+	only shows information on files that have some special status to git 
+like if it's been changed 
+
+since last committed
+
+touch file1
+touch file2
+touch file3
+	adding dummy files
+
+git status
+	tells what branch we're on
+	shows 3 untracked files
+
+git add file1
+	moves file to staging area
+
+git status
+	shows 2 untracked files
+	
+git add file2
+git add file3
+
+git status
+	shows new files added to staging area
+
+git commit -m "Add new project files"
+	everything in the staging area is added to the repository
+		this means all new files added to staging area or all changes 
+added to staging area.  
+
+everything is added to repository
+
+nano file1
+	(edit)
+
+nano file2
+	(edit)
+
+git status
+	shows changes not staged for commit.  these files were added so git 
+is tracking them
+
+git commit -a 
+	commit everything thats changed
+	-a adds the files to the staging area and commits in one step
+
+(or if needed can commit each file change separately)
+
+git add file1
+
+git commit -m "Changed file1"
+
+git add file2
+
+git commit -m "Changed file2"
+
+
+LOOKING BACK ON WHAT WE'VE DONE
+
+git log
+	shows a log of all commits starting with most recent
+
+git checkout [commit identifier]
+	--just needs 1st 5 or 6 characters
+
+
+cat file1
+	shows empty file since we are in a previous state
+
+git checkout master
+	switches to most recent state in branch master
+
+git checkout HEAD
+	checks out most recent commit in current branch
+
+git diff [ident1] [ident2]
+	shows difference between 2 commits
+	+++ means added
+
+
+BRANCHES
+
+git status
+	also shows which branch we are on
+	master branch is the canonical branch
+
+git branch foo_feature
+	creates a new branch
+	branch names should be short and meaningful
+
+git checkout foo_feature
+	checkout most recent commit in foo_feature branch
+
+nano file3
+	(bla bla)
+
+git commit -a -m "Getting started on the foo feature"
+
+git log
+	shows new commit made in foo feature branch on top, as well as 
+previous commits from master 
+
+branch
+
+git checkout master
+
+git log
+	latest commit from foo feature branch is not there now but its still 
+in the foo feature branch
+
+git checkout foo_feature
+	switches back to foo_feature branch
+
+git checkout -b bar_feature
+	creates new branch and switches to it
+
+git log 
+	shows foo_feature commit on top since new branch was made from within 
+foo_feature branch
+
+git branch
+	lists all branches
+	asterisk shows which branch we are on
+
+git branch -D bar_feature
+	deletes branch but must not be in that branch to delete
+
+
+INTRODUCTION TO MERGING
+
+--merges timelines, changes, commits
+
+--but branches remain and are workable
+
+--merge conflict is when files were changed in separate branches
+	need to decide which changes are imporant to final copy of file
+		git will try to intelligently resolve merge conflicts
+
+
+BASIC MERGING
+
+git merge foo_feature
+	type from master
+	Getting started with foo feature commit is now in master
+
+nano README
+	-(bla bla)
+
+git commit -a -m "Use totally instead of seriously"
+
+git checkout foo_feature
+
+nano README
+	-(bla bla)
+
+git commit -a -m "Talk about how awesome Treehouse students are"
+
+git checkout master
+
+git merge foo_feature
+	git auto merges foo_feature and master branch
+	it makes both changes to README file since the changes were made on 
+separate lines
+	creates a new commit on master since it had to change the README file
+		commit message is "Merge branch 'foo_feature'"
+
+
+MERGE CONFLICTS
+
+git branch
+	on foo_feature
+
+nano file 1
+	(bla bla)
+
+git commit -a- m "Add some slang to file1"
+
+git checkout master
+
+nano file1
+	(bla bla same line)
+
+git comit -a -m "Add some class to file1"
+
+git merge foo_feature
+	tries to auto merge but fails
+	says theres a merge conflict we have to fix
+
+--simplest way is to edit the file
+
+nano file1
+	shows both changes as conflict markers
+	HEAD is a term for latest commit in current branch
+	edit file any way you want, erase <<< >>> ===
+
+git add file1
+
+git commit
+
+
+WORKING WITH REMOTES
+
+--push and pull means to send and receive data from a remote repositiory
+
+--you can clone your repository to a remote server, or merge your repository 
+with one that has been 
+
+worked on on a remote server
+
+--useful for collaborating on projects
+
+
+CLONING
+
+--first step in a collaborative project is usually to clone the repository to 
+your local computer and 
+
+telling it about the remote repositories you will be working with
+
+git clone -/my_project our_clone_project
+	the clone will be in the same folder as the original
+	git automatically sets up the clone as a remote repository
+
+cd our_clone_project
+
+git remote
+	shows all the remotes available to this repository
+	when you clone a repository git automatically creates a remote named 
+origin for you
+ 		called origin because your repository originated as a copy of 
+that particular remote
+	but it does not create a remote for the original.  it does not modify 
+the original in any way
+
+cd ~/my_project
+
+git remote add our_clone ~/our_clone_project/
+	the path could also be a network path
+	adds a remote link to the clone you just created
+
+git remote
+	shows our_clone
+
+
+PUSHING AND PULLING
+
+cd ~/our_clone_project
+
+git checkout -b new_feature
+
+nano file2
+	(makes changes)
+
+git commit -a -m "Edit file2 for new_feature"
+
+git push 
+	sends all of the changes from our current repository to our remote 
+repository
+	but this doesn't work yet because the new_feature branch doesn't 
+exist in the remote yet.  git 
+
+doesn't know that it needs to be tracking changes in that branch across both 
+repositories
+	by default pushes to origin if name not specified
+
+git push origin new_feature
+	adds this branch to origin
+	the commit made previously is now there too
+
+(make changes in origin)
+(make changes in clone)
+
+so just "git push" doesn't work 
+
+git pull command pulls changes from remote
+
+git pull origin new_feature
+	but this won't merge them yet because we both made edits to the same 
+file
+
+nano file2
+	fix conflict how you like
+
+git add file2
+
+git commit
+
+the git pull is complete, now we can push
+
+git push
+
+cd ~/my_project
+
+nano file1
+	make changes
+
+git commit -a -m "Make file1 consistent with the new_feature version of 
+file2"
+
+git push our_clone_project
+ 
+	
+
+GITHUB
+
+forking a project will create a clone of it in our own GitHub account
+
+-u
+
+	--set-upstream
+
+	For every branch that is up to date or successfully pushed, add 
+upstream (tracking) reference, 	
+
+used by 	argument-less git-pull(1) and other commands. For more 
+information, see 
+
+branch.<name>.merge in 	git-	config(1).
+
+	$ git push -u origin test
+	Branch test set up to track remote branch test from origin.
+	Everything up-to-date
+	$ git pull
+	Already up-to-date.
+
+cd my_project
+
+git remote add origin 
+https://github.com/treehouse-gitbasics/my_really_cool_project.git
+
+git push -u origin master
+
+(enter user and password)
+
+(says Branch master set up to track remote branch master from origin)
+	means we added our branch master to the remote origin and sent any 
+changes we made
+
+
+
