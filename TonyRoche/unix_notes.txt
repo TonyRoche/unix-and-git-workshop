@@ -1,0 +1,396 @@
+ls list
+ls- long form
+
+directory read write execute
+
+creator group public
+
+user name group name
+
+4096 not directory size
+
+dot at beginning means hidden
+
+ls -a list all
+
+ls /etc name of folder
+
+ls - l /etc
+
+user root is admin
+
+clear
+
+command options (-l) arguments (/etc)
+
+pwd print working directory
+
+~ my home directory
+
+/home/username
+
+cd change directory
+
+cd only switch to home dir
+
+bash is the program (shell) 
+
+cd /home/treehouse/documents 
+	or cd ~/documents
+
+cd .. go up or cd ../..
+
+cd /home/treehouse/..
+
+less displays contents of a file
+	arrow keys or space bar to 	scroll
+	q quit
+
+more hello.txt
+
+cat prints contents of a file to the console
+	--can concatenate multiple 	files together
+
+nano text editor
+
+mv move or rename
+
+mv hi.txt documents/
+
+ls documents/
+
+mv documents/hi.txt .
+	. current dir
+
+mv docs documents
+	folders
+cp copy
+
+cp -r documents docs
+	folders
+
+rm remove
+
+rm -r docs
+	folders
+
+mkdir make directory
+
+mkdir -p documents/notes/console
+	create any level dir
+
+Commands
+
+whoami - Print which user you are
+adduser - Interactive tool for creating users
+su - Switch user
+sudo - Perform a command as the super user
+
+exit exits the current session
+
+sudo adduser
+
+capitalized choice at prompt is default
+
+ls -l - List files in long format, including permissions info
+chmod - Change the permissions (mode) of a file or directory
+
+kill 1450
+
+kill -term 1456
+	standard kill signal if process cant recognize default signal 
+(SIGTERM is same)
+
+kill -KILL 1456
+	last resort
+
+kill -9 1456	
+	same as above
+	forces kill
+
+kill -STOP 1463
+	just like hitting ctrl-z
+
+
+
+Environment Variables
+
+Commands
+
+VARIABLE=value - set a local environment variable
+export VARIABLE=value - set an environment variable that will be visible to 
+child processes
+env - view environment variables
+bash - start a new session within your current session
+echo - display the arguments sent to echo
+
+env vars are all in caps
+
+PS1=\u \w $
+	variable that defines prompt
+	\u username
+	\w current working directory
+
+LS_COLORS defines colors
+
+echo hello
+	prints hello
+
+echo $HOME
+	prints values of variable
+
+cd $HOME
+	same as cd\home\treehouse
+
+PS1="\w > "
+	sets new PS1 values (changes prompt)
+
+bash
+	starts new instance of bash, with original values of PS1, etc because 
+the new PS1 was a local env var
+
+exit
+	exits new instance of bash returns to original changed prompt
+
+any other new programs would not have access to new env vars unless they are 
+exported
+
+MESSAGE="hello world"
+	creates new env var
+
+export MESSAGE="Hi world"
+	exports MESSAGE to any processes we create from our current process
+
+ls command uses LS_COLORS to determine how list is colored
+
+PATH list of directories to search for when we run an exectutable.  computer 
+will search in order of directories listed separated by colons
+
+which echo
+	shows directory where echo program is located
+
+could type /bin/echo Hello
+	same as echo Hello
+
+export PATH=/home/treehouse/bin:$PATH
+	adds new directory to front of PATH
+
+ls -la
+	same as ls -l -a
+	-l long format
+	-a files with . (hidden)
+
+.bashrc file runs at startup
+
+nano .bashrc
+	can modify .bashrc for example by adding export 
+PATH=/home/treehouse/bin:$PATH
+
+
+
+Find and Grep
+
+Troubleshooting
+
+If you have deleted your hello.txt and want it back, run the following 
+command to restore it to your home directory.
+
+curl -Lo ~/hello.txt http://trhou.se/console_hello
+
+Commands
+
+find . -name "search" - look for files with the name search starting from 
+your current location
+grep "pattern" file - find any lines that contain the pattern in the given 
+file
+
+find used to locate files based on name
+
+find . -name "how_to_go_home.txt"
+	searches current directory and all below it
+	'.' represents current dir
+
+find / -name "sudoer"
+	/ means root
+	don't always need quotes but they are useful because you can use 
+special characters
+	may get errors because we may not have access to all folders but may 
+still find file
+
+find documents bin -name "how_to_go_home.txt"
+	documents and bin are 2 dirs
+
+grep
+	global regular expression print
+	searches within a file 
+	regular expression is a pattern of characters
+
+grep "is" hello.txt
+	will print out every line from hello.txt with "is"
+
+grep -n is hello.txt
+	finds is and prints line numbers
+
+grep -i this hello.txt
+	-i makes it case insensitive
+
+grep -v e hello.txt
+	shows lines that don't contain e
+
+man grep
+	shows grep manual
+
+man find
+	shows find manual
+
+
+
+PIPES AND REDIRECTION
+
+when running a process there are standard ways of inputting and outputting to 
+the program
+
+standard in
+	default is keyboard
+	can change standard in to a file
+
+standard out 
+	default is console
+	can change standard out to a file
+
+piping
+	taking the output of one process and making it the input of another 
+process
+
+grep hello
+	uses standard in and waits for input
+	will search for "hello" within whatever text you enter
+
+ctrl-d signals end of file to grep
+
+grep this < hello.txt
+	uses hello.txt as standard input
+	similar to grep this hello.txt because grep takes files as arguments 
+but some programs may require their input to use standard in
+
+grep this hello.txt > hello_grep.txt
+	outputs results to hello_grep.txt
+
+grep line hello.txt >> hello_grep.txt
+	appends results to end of file instead of overwriting
+ file
+
+
+standard error is the output of errors
+
+
+find / -name "sudoers" 2> error_log.txt
+	2> redirects the standard error stream to a file
+
+rm error_log.txt
+	deletes file
+
+/dev/null
+	a file that will delete anything you put into it
+
+
+find / -name "sudoers" 2> /dev/null
+	redirects the standard error stream and deletes it
+
+command A | Command B 
+	pipe the output of command A to the input of command B
+
+ps aux | grep bash
+
+sort 
+	Sorts the lines of standard input and sends it to standard output
+
+ps aux | grep bash | sort
+
+ps aux | grep bash | sort > sorted_bash_procs.txt
+
+
+
+BUILDING SOFTWARE FROM SOURCE
+
+sudo apt-get update
+	update package manager
+	apt-get part of package manager system
+ 
+sudo apt-get install build-essential
+ 	installs package manager build-essential
+
+curl -o http:(paste file)
+	curl makes requests from the internet
+	-o will save the file we paste to a file on our machine
+	
+
+tar -xvf [file]
+	-xvf extract, give verbose output, f points to tar file to extract
+	tar will detar the file
+
+./configure
+	./ means we want to run a program in our current directory
+	configure is the program we just extracted
+	this program will look through our system and prepare config files so 
+we can run the program.  creates a special file called makefile which 
+specifies how to build the program so its compatible with our system
+
+make
+	execute the program we downloaded using a program called make that we 
+installed with build essential
+	will take some time to build the program
+
+sudo make install
+	will install the program we downloaded and create an executable in 
+our path
+	sudo will give it permission to place files where they are needed
+
+which sqlite3
+	will show directory where program has been installed
+
+sqlite3
+	executes program
+
+--to restate steps
+	step 1 download source file
+	step 2 untar file
+	step 3 run ./configure script
+	step 4 run make command
+	step 5 run sudo make install
+
+
+
+INTRODUCTION TO PACKAGE MANAGERS
+
+--apt is the package manager for ubuntu linux
+	others are pacman, rpm
+
+sudo apt-get update
+	update apt
+
+apt-cache search git
+	apt-cache is a program
+	search is a command that will search for packages based on a pattern
+
+sudo apt-get install git
+	understands dependencies that programs have, like extra packages that 
+will also be installed
+
+which git
+	shows where git is installed
+
+sudo apt-get update
+	run this first so system will be aware of upgrades
+
+sudo apt-get upgrade
+
+sudo apt-get remove git
+	to uninstall
+	won't uninstall packages that were automatically installed with git
+		using autoremove instead of remove will remove these
+
+--in general when you need to install something check if its available in 
+your package manager
+
+
